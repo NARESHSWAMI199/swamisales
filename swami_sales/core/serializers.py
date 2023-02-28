@@ -6,11 +6,13 @@ from .models import Wholesale ,Address,Message,Item
 
 class ActionsSerializer(serializers.Serializer):
     action_id = serializers.CharField()
-    action_type = serializers.CharField()
+    action_type = serializers.CharField(required=False)
 
     def validate_action_id(self,value):
-        if value is None or value is '':
+        print("workinggg")
+        if value == None or value is '':
             return 0
+        return value
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,6 +38,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class WholesaleSerializer(serializers.ModelSerializer):
     address= AddressSerializer(read_only=True)
+    image = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Wholesale
         fields = [
@@ -46,7 +49,8 @@ class WholesaleSerializer(serializers.ModelSerializer):
                 'rating',
                 'slug'
             ]
-
+    def get_image(self,obj):
+        return obj.image.url
 
 class ItemSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='get_label_display', read_only=True)
@@ -59,7 +63,9 @@ class ItemSerializer(serializers.ModelSerializer):
             'description',
             'discount',
             'image',
-            'rating'
+            'rating',
         ]
 
 
+    def get_image(self,obj):
+        return obj.image.url

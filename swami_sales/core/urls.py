@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import WholesaleListView,ItemListView
+from .views import ItemListView,WholesaleListView,hello
 
 
 app_name= 'core'
