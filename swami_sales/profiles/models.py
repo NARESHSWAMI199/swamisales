@@ -11,7 +11,9 @@ class Profile(models.Model):
     bio = models.TextField()
     mobile = models.CharField(max_length=12)
     followers = models.ManyToManyField(User,related_name="following")
+    status = models.CharField(max_length=1, default='A')
     created = models.DateTimeField(auto_now=True)
+
 
 
     def __str__(self):

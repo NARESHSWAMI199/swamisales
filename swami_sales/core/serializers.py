@@ -47,10 +47,24 @@ class WholesaleSerializer(serializers.ModelSerializer):
                 'image',
                 'address',
                 'rating',
-                'slug'
+                'slug',
+                'status',
+                'created'
             ]
     def get_image(self,obj):
         return obj.image.url
+
+
+
+class WholesaleUpdateSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    descrition = serializers.CharField(required =  False)
+    image = serializers.ImageField()
+    address = serializers.CharField()
+
+
+
+
 
 class ItemSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='get_label_display', read_only=True)
@@ -64,8 +78,15 @@ class ItemSerializer(serializers.ModelSerializer):
             'discount',
             'image',
             'rating',
+            'in_stock'
         ]
 
 
     def get_image(self,obj):
         return obj.image.url
+    
+
+
+
+    
+

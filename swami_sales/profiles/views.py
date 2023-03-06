@@ -92,7 +92,7 @@ def update_profile(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def update_status(request):
+def update_actions(request):
     serializer = ActionSerializer(data=request.data)    
     user = request.user
     VALID_ACTIONS = ['F',"U"]
@@ -101,16 +101,43 @@ def update_status(request):
             action = serializer.validated_data.get("action")
             id = serializer.validated_data.get("id")
             profile = Profile.objects.get(id = id)
-            if action not in VALID_ACTIONS :
-                return Response(data={"message" : "Not a valid action."},status = 201)
-            if action == 'F':
-                profile.followers.add(user)
+            print(profile)
+            if profile is not None:
+                if action not in VALID_ACTIONS :
+                    return Response(data={"message" : "Not a valid action."},status = 201)
+                if action == 'F':
+                    profile.followers.add(user)
+                elif action == 'U':
+                    profile.followers.remove(user)
                 profile.save()
-            elif action == 'U':
-                profile.followers.remove(user)
-                profile.save()
-            profileSerializer = ProfileSerializer(profile)
-            return Response(profileSerializer.data,status = 201)
+                profileSerializer = ProfileSerializer(user.profile)
+                return Response(profileSerializer.data,status = 201)
+            return Response(data={"message" : "Profile doesn;t exists."},status = 201)
         return Response(data={"message" : serializer.error_messages},status = 201)
-    except: 
-         return Response(data={"message" : serializer.error_messages},status=400)
+    except Exception as e: 
+         return Response(data={"message" : str(e)},status=400)
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_status(request):
+    serializer = ActionSerializer(data=request.data)    
+    VALID_ACTIONS = ['A',"D"]
+    try :
+        if serializer.is_valid(raise_exception=True):
+            action = serializer.validated_data.get("action")
+            id = serializer.validated_data.get("id")
+            profile = Profile.objects.get(id = id)
+            if action not in VALID_ACTIONS :
+                return Response(data={"message" : "Not a valid action."},status =400)
+            profile.status = action
+            profile.save()
+            if action == 'A':
+                return Response(data={"message" : "Succesfully activated."},status = 201)
+            elif action =='D' :
+                return Response(data={"message" : "Succesfully deactivated."},status = 201)
+        return Response(data={"message" : serializer.error_messages},status = 400)
+    except Exception as e: 
+         return Response(data={"message" : str(e)},status=400)

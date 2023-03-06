@@ -23,6 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'followers',
             'following',
             'bio',
+            'status',
             'is_staff',
         ]
 

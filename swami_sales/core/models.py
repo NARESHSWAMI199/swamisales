@@ -1,6 +1,13 @@
 from django.db import models
 from django.conf import settings
 
+
+STOCK_CHOICES = (
+    ("A" , 'Active'),
+    ("D" , 'Deactivate')
+)
+
+
 User = settings.AUTH_USER_MODEL
 
 class Wholesale(models.Model):
@@ -11,7 +18,8 @@ class Wholesale(models.Model):
     image = models.ImageField(upload_to='wholesale')
     address = models.ForeignKey('Address',on_delete=models.CASCADE)
     slug = models.SlugField()
-
+    status = models.CharField(max_length=1, choices = STOCK_CHOICES,  default='A')
+    created = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 
@@ -40,6 +48,10 @@ ITEM_LABELS = (
 )
     
 
+STOCK_CHOICES = (
+    ("N" , 'Not in stock'),
+    ("Y" , 'In stock')
+)
 
 class Item(models.Model):
     wholesale = models.ForeignKey(Wholesale, models.CASCADE)
@@ -50,7 +62,9 @@ class Item(models.Model):
     label = models.CharField(max_length=1, choices=ITEM_LABELS)
     discount = models.FloatField(default=0)
     rating = models.FloatField()
+    in_stock = models.CharField(max_length=1,choices=STOCK_CHOICES)
     created = models.DateField(auto_now=True)
+
 
     def __str__(self):
         return self.title

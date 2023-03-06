@@ -5,7 +5,9 @@ from .serializers import WholesaleSerializer,ItemSerializer
 from .models import Address,Wholesale,Item
 from rest_framework import filters
 from rest_framework.response import Response
-
+from rest_framework.decorators import api_view, permission_classes
+from swami_sales.serializers import ActionSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -69,3 +71,37 @@ class ItemListView(ListAPIView):
             "items": paginated.data
         }
         return Response(context,status=200)
+    
+
+
+
+@api_view(['post'])
+@permission_classes([IsAuthenticated])
+def update_status(request):
+    serializer = ActionSerializer(data=request.data)
+    try:
+        if serializer.is_valid(raise_exception=True):
+            VALID_ACTIONS = ['A','D']
+            status = serializer.validated_data.get("action")
+            id = serializer.validated_data.get("id")
+            wholesale = Wholesale.objects.get(id=id)
+            if status not in VALID_ACTIONS:
+                return Response({'message' : "Not a valid action."},status=400)
+            if wholesale is not None:
+                wholesale.status = status
+                wholesale.save()
+                if status == 'A':
+                    return Response({"message": 'Successfully activated.'},status=201)
+                elif status == 'D':
+                    return Response({"message":'Successfully deactivated.'},status=201)
+            return Response({'message' : "Wholesale doesn't exists. "},status=400)
+        return Response({'message' : serializer.error_messages},status=400)
+    except Exception as e:
+        return Response({"message": str(e)},status=500)
+    
+
+@api_view(['post'])
+def update_wholesale(request):
+    user = request.user
+    return None
+
