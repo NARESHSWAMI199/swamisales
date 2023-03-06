@@ -8,6 +8,7 @@ from rest_framework import filters
 from rest_framework.generics import ListAPIView,RetrieveAPIView,UpdateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from swami_sales.serializers import ActionSerializer
 
 # Create your views here.
 
@@ -87,3 +88,29 @@ def update_profile(request):
 #         user = self.request.user
 #         queryset =Profile.objects.filter(user=user)
 #         return queryset
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_status(request):
+    serializer = ActionSerializer(data=request.data)    
+    user = request.user
+    VALID_ACTIONS = ['F',"U"]
+    try :
+        if serializer.is_valid(raise_exception=True):
+            action = serializer.validated_data.get("action")
+            id = serializer.validated_data.get("id")
+            profile = Profile.objects.get(id = id)
+            if action not in VALID_ACTIONS :
+                return Response(data={"message" : "Not a valid action."},status = 201)
+            if action == 'F':
+                profile.followers.add(user)
+                profile.save()
+            elif action == 'U':
+                profile.followers.remove(user)
+                profile.save()
+            profileSerializer = ProfileSerializer(profile)
+            return Response(profileSerializer.data,status = 201)
+        return Response(data={"message" : serializer.error_messages},status = 201)
+    except: 
+         return Response(data={"message" : serializer.error_messages},status=400)
