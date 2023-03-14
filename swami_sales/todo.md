@@ -13,6 +13,13 @@
 
 * Edit profile 
  ``` ProileObj ```
+<hr>
+
+## pending api's...
+
+* Add Profile
+* Edit Profile
+* Delete profile
 
 
 # Core

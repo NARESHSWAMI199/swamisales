@@ -22,6 +22,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'core',
     'profiles',
     'authentication',
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'account',
     #third party
     'drf_yasg',
     'rest_framework',
@@ -46,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'swami_sales.urls'
@@ -148,7 +151,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:3000',
+)
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -160,7 +166,7 @@ REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': (  'rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 }
 
@@ -174,6 +180,6 @@ SIMPLE_JWT = {
 
 
 SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': 'http://localhost:8080',
+    'VALIDATOR_URL': 'http://localhost:3080',
 
 }

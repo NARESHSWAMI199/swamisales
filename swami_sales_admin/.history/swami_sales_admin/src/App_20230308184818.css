@@ -1,0 +1,52 @@
+body {
+  margin : 0% auto;
+  background: '#0c192e';
+  
+}
+
+.gredint-box {
+  /* background-image: linear-gradient(red,#101036); */
+  background-color: white;
+  color : black
+}
+
+.gredint-box:hover{
+    background-color: #0c192e;
+    color: white;
+    border: 3px orange solid;
+}
+
+.big-font {
+  font-size: 1.7vw;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+
+
+.sidepannel {
+      display: flex;
+      height: '100vh';
+      color: "white";
+  }
+
+  .vr {
+    rotate: 180;
+  }
+
+
+  li:hover {
+    color: black;
+  }
+
+
+.sidebar:hover {
+  color : "black"
+}
+
+.color-nav {
+  background-color: #0c192e;
+}
+
+.big-text{
+  font-size: 5vw;
+}

@@ -31,6 +31,7 @@ urlpatterns = [
     path("profiles/",include("profiles.urls"),name="profiles"),
     path("auth/", include("authentication.urls"), name="autenctication"),
     path('register/', RegistrationApiView.as_view(),name='registration'),
+    path('account/', include('account.urls')),
     path("swagger/schema/", schema_view.with_ui('swagger',cache_timeout=0), name='swagger-schema-ui'),
    
   

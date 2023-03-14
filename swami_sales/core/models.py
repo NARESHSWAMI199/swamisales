@@ -22,7 +22,8 @@ class Wholesale(models.Model):
     created = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
-
+    class Meta:
+        ordering = ['created']
 
 class Address(models.Model):
     city = models.CharField(max_length=50)

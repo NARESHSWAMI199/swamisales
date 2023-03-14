@@ -42,6 +42,7 @@ class WholesaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wholesale
         fields = [
+                'id',
                 'name',
                 'description',
                 'image',

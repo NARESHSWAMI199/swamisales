@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Profile
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -12,10 +13,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     following = serializers.SerializerMethodField(read_only=True)
     is_staff = serializers.SerializerMethodField(read_only=True)
     image = serializers.SerializerMethodField(read_only =True)
-
+    created = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Profile
         fields = [
+            'id',
             'username',
             'image',
             'first_name',
@@ -25,6 +27,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'bio',
             'status',
             'is_staff',
+            'created'
         ]
 
 
@@ -48,7 +51,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     
     def get_following(slef,obj):
         return obj.user.following.count()
-    
+
+    def get_created(self,obj):
+        created = datetime.strftime(obj.created,'%d-%b-%Y %H:%M:%S')
+        return created
 
 
 

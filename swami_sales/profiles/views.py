@@ -19,7 +19,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ProfilesView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter]

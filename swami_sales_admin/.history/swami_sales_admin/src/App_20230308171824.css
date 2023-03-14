@@ -1,0 +1,39 @@
+body {
+  margin : 0% auto;
+  background: '#0c192e';
+  
+}
+
+.gredint-box {
+  /* background-image: linear-gradient(red,#101036,white); */
+  background-color: white;
+  color : black
+}
+
+
+.big-font {
+  font-size: 1.7vw;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+
+
+.sidepannel {
+      display: flex;
+      height: '100vh';
+      color: "white";
+  }
+
+
+  li:hover {
+    color: black;
+  }
+
+
+.sidebar:hover {
+  color : "black"
+}
+
+.color-nav {
+  background-color: #0c192e;
+}

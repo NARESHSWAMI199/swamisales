@@ -7,8 +7,12 @@ from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from swami_sales.serializers import ActionSerializer
+from profiles.models import Profile
+from profiles.serializers import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
-
+from .models import Wholesale
+from django.core import serializers
+import json
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -105,3 +109,36 @@ def update_wholesale(request):
     user = request.user
     return None
 
+
+
+
+@api_view(['GET'])
+def dashboard(request):
+    wholesales = Wholesale.objects.all()
+    staff= Profile.objects.filter(user__is_staff=1)
+    users= Profile.objects.all()
+    retailer = Profile.objects.filter(user__is_staff = 0)
+
+
+    context = {
+        'wholesale': {
+            "total_wholesale" : wholesales.count(),
+            "recent_wholesales" : WholesaleSerializer(wholesales,many=True).data[:5]
+        },
+        "staff" : {
+            "total_staff" : staff.count(),
+            "recent_staff" : ProfileSerializer(staff,many=True).data[:5]
+        },
+        
+        "users" : {
+            "total_user" : users.count(),
+            "recent_users" : ProfileSerializer(users,many=True).data[:5]
+        },
+        "retailer" : {
+              'total_retailer' : retailer.count(),
+              "recent_retailers" : ProfileSerializer(retailer,many=True).data[:5]
+
+        }
+       
+    }
+    return Response(context,200)

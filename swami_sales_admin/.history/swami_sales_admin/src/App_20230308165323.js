@@ -1,0 +1,25 @@
+import React  from 'react';
+import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import BaseRouter from './routes';
+import { ProSidebarProvider } from 'react-pro-sidebar';
+import BrandNavbar from './Components/Navbar';
+import SidePannel from './Components/SidePannel';
+
+
+function App() {
+  return (<>
+    <BrandNavbar />
+   <ProSidebarProvider>
+      <div className='' style={{ "display": "flex" }}>
+        <SidePannel />
+      </div>
+
+    <Router>
+        <BaseRouter></BaseRouter>
+    </Router>
+  </ProSidebarProvider>
+  </>);
+}
+
+export default App;
